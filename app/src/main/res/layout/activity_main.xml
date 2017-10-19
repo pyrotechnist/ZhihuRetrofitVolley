@@ -15,12 +15,34 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <Button
+                android:paddingLeft="20px"
+                android:paddingRight="20px"
+                android:layout_weight="1"
                 android:id="@+id/volley"
                 android:text="Volley"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:paddingLeft="20px"
+                android:paddingRight="20px"
+                android:layout_weight="1"
+                android:id="@+id/retrofit"
+                android:text="Retrofit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:paddingLeft="20px"
+                android:paddingRight="20px"
+                android:layout_weight="1"
+                android:id="@+id/clean"
+                android:text="Clean"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
         </LinearLayout>

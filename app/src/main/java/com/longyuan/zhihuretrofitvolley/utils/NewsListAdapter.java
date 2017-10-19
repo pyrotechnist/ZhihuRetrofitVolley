@@ -1,13 +1,17 @@
 package com.longyuan.zhihuretrofitvolley.utils;
 
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.longyuan.zhihuretrofitvolley.R;
+import com.longyuan.zhihuretrofitvolley.pojo.Story;
 
 import java.util.List;
 import java.util.zip.Inflater;
@@ -24,11 +28,14 @@ import butterknife.ButterKnife;
 public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsListAdapterVewHolder> {
 
 
-    List<String> mNewsList;
+    List<Story> mStoryList;
 
-    public NewsListAdapter(List<String> newsList){
+    Context mContext;
 
-        mNewsList = newsList;
+    public NewsListAdapter(Context context,List<Story> storyList){
+
+        mContext = context;
+        mStoryList = storyList;
 
     }
 
@@ -43,15 +50,17 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
     @Override
     public void onBindViewHolder(NewsListAdapterVewHolder holder, int position) {
 
-        String news = mNewsList.get(position);
+        Story story = mStoryList.get(position);
 
-        holder.textViewTitle.setText(news);
+        holder.textViewTitle.setText(story.getTitle());
+
+        Glide.with(mContext).load(story.getImages().get(0)).into(holder.imageView);
 
     }
 
     @Override
     public int getItemCount() {
-        return mNewsList.size();
+        return mStoryList.size();
     }
 
     public static class NewsListAdapterVewHolder extends RecyclerView.ViewHolder{
@@ -60,12 +69,28 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
         @BindView(R.id.news_title)
         TextView textViewTitle;
 
+        @BindView(R.id.image)
+        ImageView imageView;
+
         public NewsListAdapterVewHolder(View itemView) {
             super(itemView);
 
             //textViewTitle = (TextView) itemView.findViewById(R.id.news_title);
             ButterKnife.bind(this,itemView);
         }
+    }
+
+    public void updateData(List<Story> stories){
+
+        mStoryList = stories;
+
+        notifyDataSetChanged();
+    }
+
+    public void cleanData(){
+
+        mStoryList.clear();
+        notifyDataSetChanged();
     }
 }
 
