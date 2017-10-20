@@ -32,6 +32,8 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
 
     Context mContext;
 
+    private OnItemClickListener mOnItemClickListener;
+
     public NewsListAdapter(Context context,List<Story> storyList){
 
         mContext = context;
@@ -55,6 +57,14 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
         holder.textViewTitle.setText(story.getTitle());
 
         Glide.with(mContext).load(story.getImages().get(0)).into(holder.imageView);
+
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOnItemClickListener.onItemClick(story);
+            }
+        });
 
     }
 
@@ -91,6 +101,10 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
 
         mStoryList.clear();
         notifyDataSetChanged();
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.mOnItemClickListener = onItemClickListener;
     }
 }
 
