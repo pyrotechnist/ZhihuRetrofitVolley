@@ -21,7 +21,7 @@ public interface StoryService {
     @GET("news/{id}")
     Observable<StoryDetail> getStoryDetail(@Path("id") String id);
 
-    @GET("story-extra/#{id}}")
+    @GET("story-extra/{id}")
     Observable<StoryExtraInfo> getStoryExtraInfo(@Path("id") String id);
 
 }

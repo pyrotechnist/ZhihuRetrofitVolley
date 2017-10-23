@@ -3,12 +3,12 @@ package com.longyuan.zhihuretrofitvolley;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -18,29 +18,36 @@ import com.longyuan.zhihuretrofitvolley.injection.DaggerNetworkComponent;
 import com.longyuan.zhihuretrofitvolley.injection.NetworkModule;
 import com.longyuan.zhihuretrofitvolley.pojo.Stories;
 import com.longyuan.zhihuretrofitvolley.pojo.Story;
+import com.longyuan.zhihuretrofitvolley.pojo.StoryBase;
+import com.longyuan.zhihuretrofitvolley.pojo.StoryExtraInfo;
+import com.longyuan.zhihuretrofitvolley.pojo.TopStory;
 import com.longyuan.zhihuretrofitvolley.retrofit.api.StoryService;
 import com.longyuan.zhihuretrofitvolley.storydetail.StoryDetailActivity;
 import com.longyuan.zhihuretrofitvolley.utils.GsonRequest;
 import com.longyuan.zhihuretrofitvolley.utils.NewsListAdapter;
 
-import com.longyuan.zhihuretrofitvolley.utils.NewsListAdapter;
 import com.longyuan.zhihuretrofitvolley.utils.OnItemClickListener;
+import com.longyuan.zhihuretrofitvolley.utils.TopStoriesAdapter;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.Observable;
+import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
+import rx.functions.Func2;
 import rx.schedulers.Schedulers;
 
 import static com.longyuan.zhihuretrofitvolley.storydetail.StoryDetailActivity.EXTRA_STORY_ID;
 import static com.longyuan.zhihuretrofitvolley.storydetail.StoryDetailActivity.USE_VOLLEY;
-import static java.security.AccessController.getContext;
 
 public class MainActivity extends Activity {
 
@@ -53,6 +60,9 @@ public class MainActivity extends Activity {
     @BindView(R.id.retrofit)
     Button mButtonRetrofit;
 
+    @BindView(R.id.viewPage_topStories)
+    ViewPager viewPagerTopStories;
+
     @Inject
     RequestQueue mRequestQueue;
 
@@ -61,7 +71,13 @@ public class MainActivity extends Activity {
 
     private  List<Story> mStories;
 
+    private  List<TopStory> mTopStories;
+
     private NewsListAdapter mStoryListAdapter;
+
+    private TopStoriesAdapter mTopStoriesAdapter;
+
+    private Map<String,Story> mStoriesMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +91,7 @@ public class MainActivity extends Activity {
                 .build().inject(this);
 
         setRecyclerView();
+        setupViewPager();
     }
 
 
@@ -93,23 +110,54 @@ public class MainActivity extends Activity {
 
         mStoryListAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onItemClick(Story item) {
+            public void onItemClick(StoryBase item) {
                 Toast.makeText(getApplicationContext(),item.getTitle(),Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getApplicationContext(),StoryDetailActivity.class);
                 intent.putExtra(EXTRA_STORY_ID, item.getId());
 
-                intent.putExtra(USE_VOLLEY, true);
+                intent.putExtra(USE_VOLLEY, false);
                 startActivity(intent);
 
             }
 
             @Override
-            public void onItemLongClick(Story item, int position) {
+            public void onItemLongClick(StoryBase item, int position) {
 
             }
         });
 
         //mNewList.addItemDecoration(horizontalDecoration);
+    }
+
+
+    private void setupViewPager(){
+
+        List<TopStory> topStories = new ArrayList<>();
+
+        mTopStoriesAdapter = new TopStoriesAdapter(this,topStories);
+
+        mTopStoriesAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(StoryBase item) {
+                Toast.makeText(getApplicationContext(),item.getTitle(),Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(getApplicationContext(),StoryDetailActivity.class);
+                intent.putExtra(EXTRA_STORY_ID, item.getId());
+
+                intent.putExtra(USE_VOLLEY, false);
+                startActivity(intent);
+
+            }
+
+            @Override
+            public void onItemLongClick(StoryBase item, int position) {
+
+            }
+        });
+
+
+        viewPagerTopStories.setAdapter(mTopStoriesAdapter);
+
+
     }
 
     @OnClick(R.id.retrofit)
@@ -120,6 +168,9 @@ public class MainActivity extends Activity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> processData(data),
                         throwable -> processError(throwable));
+
+
+
 
         mButtonRetrofit.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_bright));
         mButtonVBolley.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
@@ -159,8 +210,67 @@ public class MainActivity extends Activity {
 
     }
 
+    private void processDataNew(){
+
+/*
+        Observable<Story> storyObservable = mStoryService.getStories()
+                .subscribeOn(Schedulers.io())
+                .flatMap(new Func1<Stories, Observable<Story>>() {
+                    @Override
+                    public Observable<Story> call(Stories stories) {
+                        mStories = stories.getStories();
+                        return Observable.from(mStories);
+                    }
+                });*/
+
+
+        Observable<Story> storyObservable = Observable.from(mStories);
+
+        Observable<StoryExtraInfo> storyExtraInfoObservable = Observable.from(mStories)
+                .subscribeOn(Schedulers.io())
+                .flatMap(new Func1<Story, Observable<StoryExtraInfo>>() {
+                    @Override
+                    public Observable<StoryExtraInfo> call(Story story) {
+                        return mStoryService.getStoryExtraInfo(story.getId());
+                    }
+                });
+
+        Observable.zip(storyObservable, storyExtraInfoObservable, new Func2<Story, StoryExtraInfo, Story>() {
+            @Override
+            public Story call(Story story, StoryExtraInfo storyExtraInfo) {
+                story.setStoryExtraInfo(storyExtraInfo);
+
+                return story;
+            }
+        }).subscribe(new Observer<Story>() {
+            @Override
+            public void onCompleted() {
+                System.exit(0);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                System.out.println("Error:" + e.getMessage());
+            }
+
+            @Override
+            public void onNext(Story result) {
+                System.out.print(result + " ");
+            }
+        });
+
+
+        mStoryListAdapter.updateData(mStories);
+    }
+
+
     private void processData(Stories stories){
         mStories = stories.getStories();
+
+        mTopStories = stories.getTopStories();
+
+        mTopStoriesAdapter.updateData(mTopStories);
+
         mStoryListAdapter.updateData(mStories);
     }
 

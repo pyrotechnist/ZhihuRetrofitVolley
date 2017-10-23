@@ -1,6 +1,7 @@
 package com.longyuan.zhihuretrofitvolley.utils;
 
 import com.longyuan.zhihuretrofitvolley.pojo.Story;
+import com.longyuan.zhihuretrofitvolley.pojo.StoryBase;
 
 /**
  * Created by loxu on 20/10/2017.
@@ -8,8 +9,8 @@ import com.longyuan.zhihuretrofitvolley.pojo.Story;
 
 public interface OnItemClickListener {
 
-    void onItemClick(Story item);
+    void onItemClick(StoryBase item);
 
-    void onItemLongClick(Story item,int position);
+    void onItemLongClick(StoryBase item,int position);
 
 }

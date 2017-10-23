@@ -17,7 +17,46 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_weight="1"
+                android:background="@android:color/holo_orange_light"
+                android:id="@+id/storydetail_comments_counter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+            <TextView
+                android:background="@android:color/holo_green_light"
+                android:layout_weight="1"
+                android:id="@+id/storydetail_popularity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+            <TextView
+                android:background="@android:color/holo_orange_light"
+                android:layout_weight="1"
+                android:id="@+id/storydetail_short_comments_counter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:background="@android:color/holo_green_light"
+                android:layout_weight="1"
+                android:id="@+id/storydetail_long_comments_counter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+        </LinearLayout>
+
         <TextView
+            android:textStyle="bold"
             android:text="StoryDetailActivity"
             android:id="@+id/text_storydetail"
             android:layout_width="match_parent"

@@ -3,6 +3,7 @@ package com.longyuan.zhihuretrofitvolley.storydetail;
 import android.os.Bundle;
 import android.app.Activity;
 import android.util.Base64;
+import android.util.Log;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,6 +18,7 @@ import com.longyuan.zhihuretrofitvolley.injection.NetworkModule;
 import com.longyuan.zhihuretrofitvolley.pojo.Stories;
 import com.longyuan.zhihuretrofitvolley.pojo.Story;
 import com.longyuan.zhihuretrofitvolley.pojo.StoryDetail;
+import com.longyuan.zhihuretrofitvolley.pojo.StoryExtraInfo;
 import com.longyuan.zhihuretrofitvolley.retrofit.api.StoryService;
 import com.longyuan.zhihuretrofitvolley.utils.GsonRequest;
 
@@ -44,6 +46,20 @@ public class StoryDetailActivity extends Activity {
 
     @BindView(R.id.text_storydetail)
     TextView mTextView;
+
+
+    @BindView(R.id.storydetail_comments_counter)
+    TextView mTextViewComments;
+
+    @BindView(R.id.storydetail_popularity)
+    TextView mTextViewCommentsPopularity;
+
+    @BindView(R.id.storydetail_short_comments_counter)
+    TextView mTextViewShortComments;
+
+    @BindView(R.id.storydetail_long_comments_counter)
+    TextView mTextViewLongComments;
+
 
     @Inject
     RequestQueue mRequestQueue;
@@ -109,7 +125,15 @@ public class StoryDetailActivity extends Activity {
         mStoryService.getStoryDetail(storyId)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(data -> processData(data));
+                .subscribe(data -> processData(data),
+                        throwable -> processError(throwable));
+
+
+        mStoryService.getStoryExtraInfo(storyId)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(data -> processExtraInfo(data),
+                        throwable -> processError(throwable));
     }
 
     private void processData(StoryDetail storyDetail){
@@ -119,6 +143,23 @@ public class StoryDetailActivity extends Activity {
         mTextView.setText(storyDetail.getTitle());
 
         mWebView.loadData(storyDetail.getBody(),"text/html",null);
+    }
+
+    private void processExtraInfo(StoryExtraInfo storyExtraInfo){
+
+        mTextViewComments.setText(storyExtraInfo.getComments());
+
+        mTextViewCommentsPopularity.setText(storyExtraInfo.getPopularity());
+
+        mTextViewShortComments.setText(storyExtraInfo.getShortComments());
+
+        mTextViewLongComments.setText(storyExtraInfo.getLongComments());
+
+    }
+
+    private void processError(Throwable e) {
+
+        Log.e("Test", e.getLocalizedMessage(), e);
     }
 
 }

@@ -1,40 +1,40 @@
 package com.longyuan.zhihuretrofitvolley.pojo;
 
 public class StoryExtraInfo{
-	private int comments;
-	private int popularity;
-	private int shortComments;
-	private int longComments;
+	private String comments;
+	private String popularity;
+	private String shortComments;
+	private String longComments;
 
-	public void setComments(int comments){
+	public void setComments(String comments){
 		this.comments = comments;
 	}
 
-	public int getComments(){
+	public String getComments(){
 		return comments;
 	}
 
-	public void setPopularity(int popularity){
+	public void setPopularity(String popularity){
 		this.popularity = popularity;
 	}
 
-	public int getPopularity(){
+	public String getPopularity(){
 		return popularity;
 	}
 
-	public void setShortComments(int shortComments){
+	public void setShortComments(String shortComments){
 		this.shortComments = shortComments;
 	}
 
-	public int getShortComments(){
+	public String getShortComments(){
 		return shortComments;
 	}
 
-	public void setLongComments(int longComments){
+	public void setLongComments(String longComments){
 		this.longComments = longComments;
 	}
 
-	public int getLongComments(){
+	public String getLongComments(){
 		return longComments;
 	}
 
