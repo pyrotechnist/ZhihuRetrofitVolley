@@ -54,11 +54,11 @@ public class MainActivity extends Activity {
     @BindView(R.id.news_list)
     RecyclerView mStoryList;
 
-    @BindView(R.id.volley)
-    Button mButtonVBolley;
+    //@BindView(R.id.volley)
+    //Button mButtonVBolley;
 
-    @BindView(R.id.retrofit)
-    Button mButtonRetrofit;
+    //@BindView(R.id.retrofit)
+    //Button mButtonRetrofit;
 
     @BindView(R.id.viewPage_topStories)
     ViewPager viewPagerTopStories;
@@ -92,6 +92,8 @@ public class MainActivity extends Activity {
 
         setRecyclerView();
         setupViewPager();
+
+        testRetrofit();
     }
 
 
@@ -104,6 +106,8 @@ public class MainActivity extends Activity {
         mStoryList.setAdapter(mStoryListAdapter);
 
         mStoryList.setLayoutManager(new LinearLayoutManager(mStoryList.getContext()));
+
+        mStoryList.setNestedScrollingEnabled(false);
 
         DividerItemDecoration horizontalDecoration = new DividerItemDecoration(mStoryList.getContext(),
                 DividerItemDecoration.VERTICAL);
@@ -160,7 +164,7 @@ public class MainActivity extends Activity {
 
     }
 
-    @OnClick(R.id.retrofit)
+    //@OnClick(R.id.retrofit)
     public void testRetrofit(){
 
         mStoryService.getStories()
@@ -172,20 +176,20 @@ public class MainActivity extends Activity {
 
 
 
-        mButtonRetrofit.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_bright));
-        mButtonVBolley.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
+        //mButtonRetrofit.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_bright));
+        //mButtonVBolley.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
     }
 
-    @OnClick(R.id.clean)
+    //@OnClick(R.id.clean)
     public void clean(){
         //mStories.clear();
         //newsListAdapter.notifyDataSetChanged();
         mStoryListAdapter.updateData(Collections.EMPTY_LIST);
-        mButtonRetrofit.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
-        mButtonVBolley.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
+        //mButtonRetrofit.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
+        //mButtonVBolley.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
     }
 
-    @OnClick(R.id.volley)
+    //@OnClick(R.id.volley)
     public void testVolley(){
 
         String url = "https://news-at.zhihu.com/api/4/news/latest";
@@ -196,8 +200,8 @@ public class MainActivity extends Activity {
                 mStories = response.getStories();
                // mButtonVBolley.setBackgroundColor(android.R.color.holo_blue_bright);
 
-                mButtonVBolley.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_bright));
-                mButtonRetrofit.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
+                //mButtonVBolley.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_bright));
+                //mButtonRetrofit.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
                 mStoryListAdapter.updateData(mStories);
             }
         }, new Response.ErrorListener() {
