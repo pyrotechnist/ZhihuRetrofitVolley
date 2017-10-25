@@ -2,8 +2,12 @@ package com.longyuan.zhihuretrofitvolley.storydetail;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,7 +33,7 @@ import butterknife.ButterKnife;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class StoryDetailActivity extends Activity {
+public class StoryDetailActivity extends AppCompatActivity {
 
     public static final String EXTRA_STORY_ID = "STORY_ID";
 
@@ -47,6 +51,17 @@ public class StoryDetailActivity extends Activity {
     @BindView(R.id.text_storydetail)
     TextView mTextView;
 
+    //@BindView(R.id.action_comments)
+    MenuItem mMenuItemComments;
+
+    //@BindView(R.id.action_fav)
+    MenuItem mMenuItemFav;
+
+    //@BindView(R.id.action_like)
+    MenuItem mMenuItemLike;
+
+    //@BindView(R.id.action_share)
+    MenuItem mMenuItemShare;
 
     @BindView(R.id.storydetail_comments_counter)
     TextView mTextViewComments;
@@ -70,6 +85,10 @@ public class StoryDetailActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_storydetail);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+
         ButterKnife.bind(this);
 
         String storyId = getIntent().getStringExtra(EXTRA_STORY_ID);
@@ -92,6 +111,33 @@ public class StoryDetailActivity extends Activity {
 
         }
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        mMenuItemComments = menu.findItem(R.id.action_comments);
+
+        mMenuItemLike = menu.findItem(R.id.action_like);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_comments) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 
@@ -150,6 +196,10 @@ public class StoryDetailActivity extends Activity {
         mTextViewComments.setText(storyExtraInfo.getComments());
 
         mTextViewCommentsPopularity.setText(storyExtraInfo.getPopularity());
+
+        mMenuItemComments.setTitle(storyExtraInfo.getComments());
+
+        mMenuItemLike.setTitle(storyExtraInfo.getComments());
 
         mTextViewShortComments.setText(storyExtraInfo.getShortComments());
 

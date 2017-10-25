@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -49,7 +50,7 @@ import rx.schedulers.Schedulers;
 import static com.longyuan.zhihuretrofitvolley.storydetail.StoryDetailActivity.EXTRA_STORY_ID;
 import static com.longyuan.zhihuretrofitvolley.storydetail.StoryDetailActivity.USE_VOLLEY;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.news_list)
     RecyclerView mStoryList;
@@ -269,7 +270,7 @@ public class MainActivity extends Activity {
 
 
     private void processData(Stories stories){
-        mStories = stories.getStories();
+        mStories = stories.getStories().subList(0,2);
 
         mTopStories = stories.getTopStories();
 
