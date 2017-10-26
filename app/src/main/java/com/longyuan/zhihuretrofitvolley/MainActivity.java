@@ -2,13 +2,22 @@ package com.longyuan.zhihuretrofitvolley;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.SubMenu;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -21,6 +30,7 @@ import com.longyuan.zhihuretrofitvolley.pojo.Stories;
 import com.longyuan.zhihuretrofitvolley.pojo.Story;
 import com.longyuan.zhihuretrofitvolley.pojo.StoryBase;
 import com.longyuan.zhihuretrofitvolley.pojo.StoryExtraInfo;
+import com.longyuan.zhihuretrofitvolley.pojo.ThemeItem;
 import com.longyuan.zhihuretrofitvolley.pojo.TopStory;
 import com.longyuan.zhihuretrofitvolley.retrofit.api.StoryService;
 import com.longyuan.zhihuretrofitvolley.storydetail.StoryDetailActivity;
@@ -34,6 +44,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import javax.inject.Inject;
 
@@ -50,7 +61,7 @@ import rx.schedulers.Schedulers;
 import static com.longyuan.zhihuretrofitvolley.storydetail.StoryDetailActivity.EXTRA_STORY_ID;
 import static com.longyuan.zhihuretrofitvolley.storydetail.StoryDetailActivity.USE_VOLLEY;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity   implements NavigationView.OnNavigationItemSelectedListener  {
 
     @BindView(R.id.news_list)
     RecyclerView mStoryList;
@@ -80,10 +91,34 @@ public class MainActivity extends AppCompatActivity {
 
     private Map<String,Story> mStoriesMap;
 
+    private Menu mMenu;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        mMenu = navigationView.getMenu();
+/*        SubMenu subMenu;
+        subMenu = mMenu.addSubMenu("TTTTTT");
+        subMenu.add(0, Menu.FIRST, Menu.FIRST, "1111")
+                .setIcon(R.drawable.ic_chat_white_18dp);
+        subMenu.add(1, Menu.FIRST + 1, Menu.FIRST, "2222")
+                .setIcon(R.drawable.ic_chat_white_18dp);*/
+
 
         ButterKnife.bind(this);
 
@@ -93,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
 
         setRecyclerView();
         setupViewPager();
+        setupNavigationView();
 
         testRetrofit();
     }
@@ -162,6 +198,16 @@ public class MainActivity extends AppCompatActivity {
 
         viewPagerTopStories.setAdapter(mTopStoriesAdapter);
 
+
+    }
+
+    private void setupNavigationView(){
+
+        mStoryService.getThemes()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(data -> processThemes(data.getOthers()),
+                        throwable -> processError(throwable));
 
     }
 
@@ -279,8 +325,32 @@ public class MainActivity extends AppCompatActivity {
         mStoryListAdapter.updateData(mStories);
     }
 
+
+    private void processThemes(List<ThemeItem> items){
+
+        SubMenu subMenu;
+        subMenu = mMenu.addSubMenu("XXXXX");
+
+
+        int i =  Menu.FIRST;
+        items.forEach(new Consumer<ThemeItem>() {
+                          @Override
+                          public void accept(ThemeItem themeItem) {
+
+                              subMenu.add(0, Menu.FIRST, Menu.FIRST, themeItem.getName())
+                                      .setIcon(R.drawable.ic_chat_white_18dp);
+
+                          }
+                      }
+        );
+    }
+
     private void processError(Throwable e) {
         Log.e("Test", e.getLocalizedMessage(), e);
     }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        return false;
+    }
 }

@@ -5,6 +5,7 @@ import com.longyuan.zhihuretrofitvolley.pojo.ShortComments;
 import com.longyuan.zhihuretrofitvolley.pojo.Stories;
 import com.longyuan.zhihuretrofitvolley.pojo.StoryDetail;
 import com.longyuan.zhihuretrofitvolley.pojo.StoryExtraInfo;
+import com.longyuan.zhihuretrofitvolley.pojo.Themes;
 
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -31,6 +32,10 @@ public interface StoryService {
 
     @GET("story/{id}/short-comments")
     Observable<ShortComments> getShortComments(@Path("id") String id);
+
+    @GET("themes")
+    Observable<Themes> getThemes();
+
 
 
 }
