@@ -59,6 +59,8 @@ public class CommentsListAdapter extends RecyclerView.Adapter<CommentsListAdapte
 
         holder.textViewAuthor.setText(commentItem.getAuthor());
 
+        holder.textViewCommentLikeNumber.setText(commentItem.getLikes());
+
         holder.textViewDate.setText(DateFormat.format("dd-MM-yyyy hh:mm:ss", commentItem.getTime()*1000L).toString());
 
         Glide.with(mContext).load(commentItem.getAvatar()).into(holder.imageView);
@@ -89,6 +91,9 @@ public class CommentsListAdapter extends RecyclerView.Adapter<CommentsListAdapte
 
         @BindView(R.id.comment_avatar)
         ImageView imageView;
+
+        @BindView(R.id.comment_like_number)
+        TextView textViewCommentLikeNumber;
 
 
         @BindView(R.id.comment_date)

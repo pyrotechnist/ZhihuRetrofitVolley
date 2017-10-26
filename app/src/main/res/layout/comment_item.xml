@@ -10,7 +10,6 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/holo_orange_light"
         android:orientation="horizontal"
         android:padding="5dp">
 
@@ -18,22 +17,49 @@
             android:id="@+id/comment_avatar"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:background="@android:color/holo_green_light"
             android:scaleType="center" />
 
         <LinearLayout
-            android:layout_marginLeft="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/comment_author"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text=""
-                android:textStyle="bold"
-                android:layout_marginBottom="5dp"/>
+                android:layout_marginBottom="5dp">
+
+                <TextView
+                    android:id="@+id/comment_author"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_alignParentLeft="true"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:background="@android:color/holo_orange_light"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_alignParentRight="true">
+
+                    <ImageView
+                        android:id="@+id/comment_like_image"
+                        android:layout_width="24dp"
+                        android:src="@drawable/ic_thumb_up_white_18dp"
+                        android:layout_height="18dp" />
+
+                    <TextView
+                        android:id="@+id/comment_like_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/comment_content"
@@ -42,10 +68,10 @@
                 android:text="" />
 
             <TextView
-                android:layout_marginTop="5dp"
                 android:id="@+id/comment_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:text="" />
 
         </LinearLayout>
