@@ -1,5 +1,7 @@
 package com.longyuan.zhihuretrofitvolley.retrofit.api;
 
+import com.longyuan.zhihuretrofitvolley.pojo.LongComments;
+import com.longyuan.zhihuretrofitvolley.pojo.ShortComments;
 import com.longyuan.zhihuretrofitvolley.pojo.Stories;
 import com.longyuan.zhihuretrofitvolley.pojo.StoryDetail;
 import com.longyuan.zhihuretrofitvolley.pojo.StoryExtraInfo;
@@ -23,5 +25,12 @@ public interface StoryService {
 
     @GET("story-extra/{id}")
     Observable<StoryExtraInfo> getStoryExtraInfo(@Path("id") String id);
+
+    @GET("story/{id}/long-comments")
+    Observable<LongComments> getLongComments(@Path("id") String id);
+
+    @GET("story/{id}/short-comments")
+    Observable<ShortComments> getShortComments(@Path("id") String id);
+
 
 }

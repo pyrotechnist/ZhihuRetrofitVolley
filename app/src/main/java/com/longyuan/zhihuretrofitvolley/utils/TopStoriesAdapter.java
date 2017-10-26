@@ -26,7 +26,7 @@ public class TopStoriesAdapter extends PagerAdapter {
 
     List<TopStory> mTopStories;
 
-    private OnItemClickListener mOnItemClickListener;
+    private OnItemClickListener.OnStoryItemClickListener mOnItemClickListener;
 
     public TopStoriesAdapter(Context context, List<TopStory> imageList) {
         this.mContext = context;
@@ -83,7 +83,7 @@ public class TopStoriesAdapter extends PagerAdapter {
         notifyDataSetChanged();
     }
 
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+    public void setOnItemClickListener(OnItemClickListener.OnStoryItemClickListener onItemClickListener) {
 
         this.mOnItemClickListener = onItemClickListener;
     }

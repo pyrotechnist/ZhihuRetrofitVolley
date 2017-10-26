@@ -1,10 +1,9 @@
 package com.longyuan.zhihuretrofitvolley.storydetail;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,10 +16,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.longyuan.zhihuretrofitvolley.R;
+import com.longyuan.zhihuretrofitvolley.comment.CommentActivity;
 import com.longyuan.zhihuretrofitvolley.injection.DaggerNetworkComponent;
 import com.longyuan.zhihuretrofitvolley.injection.NetworkModule;
-import com.longyuan.zhihuretrofitvolley.pojo.Stories;
-import com.longyuan.zhihuretrofitvolley.pojo.Story;
 import com.longyuan.zhihuretrofitvolley.pojo.StoryDetail;
 import com.longyuan.zhihuretrofitvolley.pojo.StoryExtraInfo;
 import com.longyuan.zhihuretrofitvolley.retrofit.api.StoryService;
@@ -36,6 +34,10 @@ import rx.schedulers.Schedulers;
 public class StoryDetailActivity extends AppCompatActivity {
 
     public static final String EXTRA_STORY_ID = "STORY_ID";
+
+    public static final String SHORT_COMMENTS_NUMBER = "SHORT_COMMENTS_NUMBER";
+
+    public static final String LONG_COMMENTS_NUMBER = "LONG_COMMENTS_NUMBER";
 
     public static final String USE_VOLLEY = "USE_VOLLEY";
 
@@ -80,6 +82,13 @@ public class StoryDetailActivity extends AppCompatActivity {
     RequestQueue mRequestQueue;
 
 
+    private String storyId;
+
+    private String mShortCommentsNumber;
+
+    private String mLongCommentsNumber;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,7 +100,7 @@ public class StoryDetailActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        String storyId = getIntent().getStringExtra(EXTRA_STORY_ID);
+        storyId = getIntent().getStringExtra(EXTRA_STORY_ID);
 
         boolean useVolley = getIntent().getBooleanExtra(USE_VOLLEY,false);
 
@@ -116,7 +125,7 @@ public class StoryDetailActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_storydetail, menu);
 
         mMenuItemComments = menu.findItem(R.id.action_comments);
 
@@ -134,6 +143,12 @@ public class StoryDetailActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_comments) {
+
+            Intent intent = new Intent(getApplicationContext(),CommentActivity.class);
+            intent.putExtra(EXTRA_STORY_ID, storyId);
+            intent.putExtra(SHORT_COMMENTS_NUMBER, mShortCommentsNumber);
+            intent.putExtra(LONG_COMMENTS_NUMBER, mLongCommentsNumber);
+            startActivity(intent);
             return true;
         }
 
@@ -199,11 +214,15 @@ public class StoryDetailActivity extends AppCompatActivity {
 
         mMenuItemComments.setTitle(storyExtraInfo.getComments());
 
-        mMenuItemLike.setTitle(storyExtraInfo.getComments());
+        mMenuItemLike.setTitle(storyExtraInfo.getPopularity());
 
-        mTextViewShortComments.setText(storyExtraInfo.getShortComments());
+        mShortCommentsNumber = storyExtraInfo.getShortComments();
 
-        mTextViewLongComments.setText(storyExtraInfo.getLongComments());
+        mLongCommentsNumber = storyExtraInfo.getLongComments();
+
+        mTextViewShortComments.setText(mShortCommentsNumber);
+
+        mTextViewLongComments.setText(mLongCommentsNumber);
 
     }
 

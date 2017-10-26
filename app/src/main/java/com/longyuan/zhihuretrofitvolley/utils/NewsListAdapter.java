@@ -32,7 +32,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
 
     Context mContext;
 
-    private OnItemClickListener mOnItemClickListener;
+    private OnItemClickListener.OnStoryItemClickListener mOnItemClickListener;
 
     public NewsListAdapter(Context context,List<Story> storyList){
 
@@ -103,7 +103,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
         notifyDataSetChanged();
     }
 
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+    public void setOnItemClickListener(OnItemClickListener.OnStoryItemClickListener onItemClickListener) {
         this.mOnItemClickListener = onItemClickListener;
     }
 }

@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
         DividerItemDecoration horizontalDecoration = new DividerItemDecoration(mStoryList.getContext(),
                 DividerItemDecoration.VERTICAL);
 
-        mStoryListAdapter.setOnItemClickListener(new OnItemClickListener() {
+        mStoryListAdapter.setOnItemClickListener(new OnItemClickListener.OnStoryItemClickListener() {
             @Override
             public void onItemClick(StoryBase item) {
                 Toast.makeText(getApplicationContext(),item.getTitle(),Toast.LENGTH_LONG).show();
@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
 
         mTopStoriesAdapter = new TopStoriesAdapter(this,topStories);
 
-        mTopStoriesAdapter.setOnItemClickListener(new OnItemClickListener() {
+        mTopStoriesAdapter.setOnItemClickListener(new OnItemClickListener.OnStoryItemClickListener() {
             @Override
             public void onItemClick(StoryBase item) {
                 Toast.makeText(getApplicationContext(),item.getTitle(),Toast.LENGTH_LONG).show();
@@ -270,7 +270,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void processData(Stories stories){
-        mStories = stories.getStories().subList(0,2);
+        mStories = stories.getStories().subList(0,9);
 
         mTopStories = stories.getTopStories();
 

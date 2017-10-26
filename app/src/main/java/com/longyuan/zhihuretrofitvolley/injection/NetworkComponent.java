@@ -1,6 +1,7 @@
 package com.longyuan.zhihuretrofitvolley.injection;
 
 import com.longyuan.zhihuretrofitvolley.MainActivity;
+import com.longyuan.zhihuretrofitvolley.comment.CommentActivity;
 import com.longyuan.zhihuretrofitvolley.storydetail.StoryDetailActivity;
 
 import javax.inject.Singleton;
@@ -18,5 +19,7 @@ public interface NetworkComponent {
     void inject(MainActivity mainActivity);
 
     void inject(StoryDetailActivity storyDetailActivity);
+
+    void inject(CommentActivity commentActivity);
 
 }
