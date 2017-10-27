@@ -331,14 +331,12 @@ public class MainActivity extends AppCompatActivity   implements NavigationView.
         SubMenu subMenu;
         subMenu = mMenu.addSubMenu("XXXXX");
 
-
         int i =  Menu.FIRST;
         items.forEach(new Consumer<ThemeItem>() {
                           @Override
                           public void accept(ThemeItem themeItem) {
 
-                              subMenu.add(0, Menu.FIRST, Menu.FIRST, themeItem.getName())
-                                      .setIcon(R.drawable.ic_chat_white_18dp);
+                              mMenu.add(Menu.NONE, themeItem.getId(), Menu.FIRST, themeItem.getName());
 
                           }
                       }
@@ -349,8 +347,22 @@ public class MainActivity extends AppCompatActivity   implements NavigationView.
         Log.e("Test", e.getLocalizedMessage(), e);
     }
 
+    public void addMenuItem(ThemeItem themeItem)
+    {
+
+    }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+        int id = item.getItemId();
+
+        Toast.makeText(this,id,Toast.LENGTH_LONG);
+
+        Toast.makeText(this,item.getTitle(),Toast.LENGTH_LONG);
+
+
+
         return false;
     }
 }
