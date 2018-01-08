@@ -332,7 +332,7 @@ public class MainActivity extends AppCompatActivity   implements NavigationView.
         subMenu = mMenu.addSubMenu("XXXXX");
 
         int i =  Menu.FIRST;
-        items.forEach(new Consumer<ThemeItem>() {
+       /* items.forEach(new Consumer<ThemeItem>() {
                           @Override
                           public void accept(ThemeItem themeItem) {
 
@@ -340,7 +340,7 @@ public class MainActivity extends AppCompatActivity   implements NavigationView.
 
                           }
                       }
-        );
+        );*/
     }
 
     private void processError(Throwable e) {
