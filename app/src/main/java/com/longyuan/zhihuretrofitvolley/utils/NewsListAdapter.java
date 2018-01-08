@@ -56,7 +56,14 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
 
         holder.textViewTitle.setText(story.getTitle());
 
-        Glide.with(mContext).load(story.getImages().get(0)).into(holder.imageView);
+        if(story.getImages() != null && story.getImages().size()>0)
+        {
+            Glide.with(mContext).load(story.getImages().get(0)).into(holder.imageView);
+        }else
+        {
+            holder.imageView.setVisibility(View.INVISIBLE);
+        }
+
 
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
